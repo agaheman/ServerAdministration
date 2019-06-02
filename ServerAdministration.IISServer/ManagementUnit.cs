@@ -15,8 +15,8 @@ namespace ServerAdministration.IISServer
         {
             var siteInformation = new SiteInfo();
 
-            siteInformation.Id = site.Id;
-            siteInformation.Name = site.Name;
+            siteInformation.SiteId = site.Id;
+            siteInformation.SiteName = site.Name;
             siteInformation.TraceFailedRequest = new TraceFailedRequest
             {
                 Directory = site.TraceFailedRequestsLogging.Directory,
@@ -87,8 +87,8 @@ namespace ServerAdministration.IISServer
                 var siteInformation = new SiteInfo();
 
 
-                siteInformation.Id = site.Id;
-                siteInformation.Name = site.Name;
+                siteInformation.SiteId = site.Id;
+                siteInformation.SiteName = site.Name;
                 //siteInformation.State = site.State;
                 siteInformation.TraceFailedRequest = new TraceFailedRequest
                 {
@@ -161,7 +161,7 @@ namespace ServerAdministration.IISServer
         }
 
 
-        public string GetLogDirectory(Site site)
+        public static string GetLogDirectory(Site site)
         {
             string defaultLogDirectory = @"%SystemDrive%\inetpub\logs\LogFiles";
 
