@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ServerAdministration.Server.Entities
 {
-    public class SiteIISLog
+    public class SiteIISLog : IEntity
     {
         public int Id { get; set; }
         /// <summary>

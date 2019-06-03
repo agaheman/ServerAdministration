@@ -1,17 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ServerAdministration.IISServer;
+using ServerAdministration.Server.DataAccess.Configurations;
 using ServerAdministration.Server.Entities;
 
 namespace ServerAdministration.Server.DataAccess.DbContexts
 {
-    public class SlaveServerDbContext : DbContext
+    public class SlaveDbContext : DbContext,IDbContext
     {
         //DbSet<SiteInfo> Sites { get; set; }
         DbSet<IISLogEvent> IISLogEvents { get; set; }
         DbSet<SiteIISLog> SiteIISLogs { get; set; }
 
 
-        public SlaveServerDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+        public SlaveDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
         {
         }
 
@@ -22,5 +22,9 @@ namespace ServerAdministration.Server.DataAccess.DbContexts
 
             modelBuilder.ApplyConfiguration(new SiteIISLogConfiguration());
         }
+    }
+
+    internal interface IDbContext
+    {
     }
 }

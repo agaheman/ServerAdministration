@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Web.Administration;
 using ServerAdministration.IISServer;
+using ServerAdministration.Server.Entities;
+using ServerAdministration.Server.Slave.Services;
 using System;
 using System.Collections.Generic;
 
@@ -13,6 +15,12 @@ namespace ServerAdministration.Server.Slave.Controllers
     [ApiController]
     public class SiteInfoController : ControllerBase
     {
+        private readonly ISiteInfoService siteInfoService;
+
+        public SiteInfoController(ISiteInfoService siteInfoService)
+        {
+            this.siteInfoService = siteInfoService;
+        }
         [HttpGet("[Action]")]
         public List<SiteInfo> GetSitesInfo()
         {
@@ -21,27 +29,44 @@ namespace ServerAdministration.Server.Slave.Controllers
         }
 
         [HttpGet("ParseLogFiles")]
-        public List<IISLogEvent> ParseLogFiles([FromQuery] string siteName)
+        public IEnumerable<IISLogParser.IISLogEvent> ParseLogFiles([FromQuery] string siteName)
         {
             var logFiles = ManagementUnit.GetLogFilesNewerThan(@"C:\Agah\MySiteFiles\Log");
 
             LogParser logParser = new LogParser();
-            List<IISLogEvent> iISLogEvents = new List<IISLogEvent>();
+            List<IISLogParser.IISLogEvent> iISLogEvents = new List<IISLogParser.IISLogEvent>();
 
             foreach (var logfile in logFiles)
             {
                 iISLogEvents.AddRange(logParser.ParseIISLogs(logfile));
             };
 
-
             return iISLogEvents;
         }
 
+        [HttpGet("[action]")]
+        public void SaveParsedFiles([FromQuery] string siteName)
+        {
+            var site = ManagementUnit.GetSiteBy(siteName);
+            var logFilePaths = ManagementUnit.GetLogFilesNewerThan(DateTime.Now.AddHours(-6), site);
+
+            LogParser logParser = new LogParser();
+            List<SiteIISLog> iISLogEvents = new List<SiteIISLog>();
+
+            foreach (var logfilePath in logFilePaths)
+            {
+                var logEvents = logParser.ParseIISLogs(logfilePath);
+                iISLogEvents.AddRange(siteInfoService.Map(site.Name, logEvents));
+            };
+
+            siteInfoService.SaveSiteInfoRange(iISLogEvents);
+
+        }
 
         [HttpGet("GetSiteInfo")]
-        public SiteInfo GetSiteInfoBy([FromQuery] string logDirectory)
+        public SiteInfo GetSiteInfoBy([FromQuery] string siteName)
         {
-            var site = ManagementUnit.GetSiteBy(logDirectory);
+            var site = ManagementUnit.GetSiteBy(siteName);
             var siteInfo = ManagementUnit.GetSiteInfo(site);
             return siteInfo;
         }

@@ -5,8 +5,7 @@ namespace ServerAdministration.IISServer
 {
     public class SiteInfo
     {
-        public int Id { get; set;
-        }
+        public int Id { get; set; }
         public long SiteId { get; set; }
         public string SiteName { get; set; }
         public bool ServerAutoStart { get; set; }

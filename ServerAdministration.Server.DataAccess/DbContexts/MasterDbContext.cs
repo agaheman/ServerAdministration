@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ServerAdministration.Server.DataAccess.DbContexts
 {
-    public class MasterServerDbContext:DbContext
+    public class MasterDbContext:DbContext
     {
     }
 }

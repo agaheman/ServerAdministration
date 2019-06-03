@@ -6,7 +6,7 @@ namespace ServerAdministration.IISServer
 {
     public class LogParser
     {
-        public List<IISLogEvent> ParseIISLogs(string logFilePath)
+        public IEnumerable<IISLogEvent> ParseIISLogs(string logFilePath)
         {
             List<IISLogEvent> logs = new List<IISLogEvent>();
             using (ParserEngine parser = new ParserEngine(logFilePath))
@@ -18,5 +18,6 @@ namespace ServerAdministration.IISServer
             }
             return logs;
         }
+
     }
 }
