@@ -20,7 +20,7 @@ namespace ServerAdministration.Server.DataAccess.DbContexts
             modelBuilder.Entity(typeof(IISLogEvent));
             modelBuilder.Entity(typeof(SiteIISLog));
 
-            modelBuilder.ApplyConfiguration(new SiteIISLogConfiguration());
+            //modelBuilder.ApplyConfiguration(new SiteIISLogConfiguration());
         }
     }
 

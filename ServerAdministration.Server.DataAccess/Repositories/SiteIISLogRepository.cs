@@ -1,14 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ServerAdministration.Server.DataAccess.DbContexts;
 using ServerAdministration.Server.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ServerAdministration.Server.DataAccess.Repositories
 {
-    public class SiteIISLogRepository : Repository<SiteIISLog>
+    public class SiteIISLogRepository : RepositorySlave<SiteIISLog>
     {
-        public SiteIISLogRepository(DbContext dbContext) : base(dbContext)
+        public SiteIISLogRepository(SlaveDbContext dbContext) : base(dbContext)
         {
         }
     }

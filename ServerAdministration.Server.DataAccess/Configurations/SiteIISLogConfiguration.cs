@@ -5,6 +5,9 @@ namespace ServerAdministration.Server.DataAccess.Configurations
 {
     internal class SiteIISLogConfiguration : IEntityTypeConfiguration<object>
     {
-        public void Configure(EntityTypeBuilder<object> builder) => throw new System.NotImplementedException();
+        public void Configure(EntityTypeBuilder<object> builder)
+        {
+
+        }
     }
 }

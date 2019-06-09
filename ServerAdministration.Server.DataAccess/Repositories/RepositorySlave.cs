@@ -1,6 +1,7 @@
 ﻿using Common.Utilities;
 using Microsoft.EntityFrameworkCore;
 using ServerAdministration.Server.DataAccess.Contracts;
+using ServerAdministration.Server.DataAccess.DbContexts;
 using ServerAdministration.Server.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace ServerAdministration.Server.DataAccess.Repositories
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+    public class RepositorySlave<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
-        protected readonly DbContext ServerDbContext;
+        protected readonly SlaveDbContext ServerDbContext;
         public DbSet<TEntity> Entities { get; }
         public virtual IQueryable<TEntity> Table => Entities;
         public virtual IQueryable<TEntity> TableNoTracking => Entities.AsNoTracking();
 
-        public Repository(DbContext dbContext)
+        public RepositorySlave(SlaveDbContext dbContext)
         {
             ServerDbContext = dbContext;
             Entities = ServerDbContext.Set<TEntity>(); // City => Cities

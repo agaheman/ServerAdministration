@@ -29,14 +29,13 @@ namespace ServerAdministration.Server.Slave
             services.AddDbContext<SlaveDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection"));
-
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<ISiteInfoService, SiteInfoService>();
-            services.AddScoped< IRepository<IISLogEvent>,Repository<IISLogEvent>>();
+            services.AddScoped< IRepository<IISLogEvent>,RepositorySlave<IISLogEvent>>();
 
 
         }
@@ -51,8 +50,8 @@ namespace ServerAdministration.Server.Slave
 
             //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<ISiteInfoService, SiteInfoService>();
-            services.AddScoped<IRepository<SiteIISLog>, Repository<SiteIISLog>>();
-            services.AddScoped<IRepository<IISLogEvent>, Repository<IISLogEvent>>();
+            services.AddScoped<IRepository<SiteIISLog>, RepositorySlave<SiteIISLog>>();
+            services.AddScoped<IRepository<IISLogEvent>, RepositorySlave<IISLogEvent>>();
 
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ServerAdministration.Server.DataAccess.DbContexts;
 using ServerAdministration.Server.Entities;
 using System;
 using System.Collections.Generic;
@@ -6,9 +7,9 @@ using System.Text;
 
 namespace ServerAdministration.Server.DataAccess.Repositories
 {
-    public class IISLogEventRepository : Repository<IISLogEvent>
+    public class IISLogEventRepository : RepositorySlave<IISLogEvent>
     {
-        public IISLogEventRepository(DbContext dbContext) : base(dbContext)
+        public IISLogEventRepository(SlaveDbContext dbContext) : base(dbContext)
         {
         }
     }

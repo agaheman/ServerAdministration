@@ -71,7 +71,10 @@ namespace ServerAdministration.IISServer
         }
         public static Site GetSiteBy(string siteName)
         {
-            var result = ServerManager.Sites[siteName];
+            var result = ServerManager.Sites.FirstOrDefault(x=>x.Name==siteName);
+            if (result == null)
+                throw new Exception("سایتی با این اسم وجود ندارد.");
+            
             return result;
         }
 
@@ -107,7 +110,7 @@ namespace ServerAdministration.IISServer
                         ApplicationPoolName = application.ApplicationPoolName,
                         EnabledProtocols = application.EnabledProtocols,
                         EnabledPreload = (bool)application.Attributes["preloadEnabled"].Value
-                    }); ;
+                    });
                 }
 
                 siteInformation.Applications = applications;
