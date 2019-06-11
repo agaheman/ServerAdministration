@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ServerAdministration.Server.DataAccess.Repositories
+namespace ServerAdministration.Server.DataAccess.Repositories.Slave
 {
     public class IISLogEventRepository : RepositorySlave<IISLogEvent>
     {

@@ -22,5 +22,6 @@
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\ServerAdministration.IISServer\ServerAdministration.IISServer.csproj" />
     <ProjectReference Include="..\ServerAdministration.Server.DataAccess\ServerAdministration.Server.DataAccess.csproj" />
+    <ProjectReference Include="..\ServerAdministration.WindowOs\ServerAdministration.WindowOs.csproj" />
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServerAdministration.Server.DataAccess.DbContexts;
 
-namespace ServerAdministration.Server.DataAccess.Migrations
+namespace ServerAdministration.Server.DataAccess.Migrations.Slave
 {
     [DbContext(typeof(SlaveDbContext))]
     partial class SlaveDbContextModelSnapshot : ModelSnapshot

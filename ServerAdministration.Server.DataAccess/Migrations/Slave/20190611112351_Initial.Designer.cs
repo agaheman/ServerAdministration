@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServerAdministration.Server.DataAccess.DbContexts;
 
-namespace ServerAdministration.Server.DataAccess.Migrations
+namespace ServerAdministration.Server.DataAccess.Migrations.Slave
 {
     [DbContext(typeof(SlaveDbContext))]
-    [Migration("20190609073942_Initial")]
+    [Migration("20190611112351_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

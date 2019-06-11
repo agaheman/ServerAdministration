@@ -9,15 +9,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerAdministration.SQLSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerAdministration.IISServer", "ServerAdministration.IISServer\ServerAdministration.IISServer.csproj", "{317CF22E-8BF5-4461-B110-D87317225A5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerAdministration.Server.Slave", "ServerAdministration.Server.Slave\ServerAdministration.Server.Slave.csproj", "{B1C64642-DDBB-436E-8E69-62169A30B5F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerAdministration.Server.Slave", "ServerAdministration.Server.Slave\ServerAdministration.Server.Slave.csproj", "{B1C64642-DDBB-436E-8E69-62169A30B5F5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServerAdministration.Server", "ServerAdministration.Server", "{406604AC-D0DB-41E6-9236-E61FC8C2126C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerAdministration.Server.Master", "ServerAdministration.Server.Master\ServerAdministration.Server.Master.csproj", "{7E3E3BB5-7111-4ADF-9083-88F3E9C8C46D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerAdministration.Server.Master", "ServerAdministration.Server.Master\ServerAdministration.Server.Master.csproj", "{7E3E3BB5-7111-4ADF-9083-88F3E9C8C46D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerAdministration.Server.Entities", "ServerAdministration.Server.Entities\ServerAdministration.Server.Entities.csproj", "{376FFA5A-7916-427D-AF11-8B8187A2405E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerAdministration.Server.Entities", "ServerAdministration.Server.Entities\ServerAdministration.Server.Entities.csproj", "{376FFA5A-7916-427D-AF11-8B8187A2405E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerAdministration.Server.DataAccess", "ServerAdministration.Server.DataAccess\ServerAdministration.Server.DataAccess.csproj", "{BF62E461-9C9D-4B94-AF4C-45DC19E356C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerAdministration.Server.DataAccess", "ServerAdministration.Server.DataAccess\ServerAdministration.Server.DataAccess.csproj", "{BF62E461-9C9D-4B94-AF4C-45DC19E356C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerAdministration.WindowOs", "ServerAdministration.WindowOs\ServerAdministration.WindowOs.csproj", "{359BE9C6-C22A-44E7-A98A-ED97346DCDEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{BF62E461-9C9D-4B94-AF4C-45DC19E356C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF62E461-9C9D-4B94-AF4C-45DC19E356C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF62E461-9C9D-4B94-AF4C-45DC19E356C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{359BE9C6-C22A-44E7-A98A-ED97346DCDEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{359BE9C6-C22A-44E7-A98A-ED97346DCDEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{359BE9C6-C22A-44E7-A98A-ED97346DCDEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{359BE9C6-C22A-44E7-A98A-ED97346DCDEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

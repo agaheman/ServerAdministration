@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ServerAdministration.Server.DataAccess.Migrations
+namespace ServerAdministration.Server.DataAccess.Migrations.Slave
 {
     public partial class Initial : Migration
     {

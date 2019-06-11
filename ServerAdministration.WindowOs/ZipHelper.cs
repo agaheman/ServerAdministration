@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Ionic.Zip;
 
-namespace Common
+namespace ServerAdministration.WindowOs
 {
     public static class ZipHelper
     {

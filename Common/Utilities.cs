@@ -32,4 +32,22 @@ namespace Common.Utilities
             }
         }
     }
+
+    public class DigitalStorage
+    {
+        public static string ByteToHumanReadableSize(long byteCount)
+        {
+            string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+            double len = byteCount;
+            var order = 0;
+            while (byteCount >= 1024 && order < sizes.Length - 1)
+            {
+                order++;
+                len /= 1024;
+            }
+            return $"{len:0.##} {sizes[order]}";
+        }
+    }
+
+
 }

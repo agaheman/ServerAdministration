@@ -13,4 +13,9 @@
     <ProjectReference Include="..\ServerAdministration.Server.Entities\ServerAdministration.Server.Entities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\Master\" />
+    <Folder Include="Repositories\Master\" />
+  </ItemGroup>
+
 </Project>
