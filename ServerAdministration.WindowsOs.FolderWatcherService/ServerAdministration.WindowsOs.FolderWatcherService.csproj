@@ -69,11 +69,5 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ServerAdministration.WindowOs\ServerAdministration.WindowOs.csproj">
-      <Project>{359BE9C6-C22A-44E7-A98A-ED97346DCDEB}</Project>
-      <Name>ServerAdministration.WindowOs</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

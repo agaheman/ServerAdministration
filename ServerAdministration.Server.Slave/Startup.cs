@@ -26,7 +26,7 @@ namespace ServerAdministration.Server.Slave
 
         public void ConfigureServices(IServiceCollection services)
         {
-            ServiceBase.Run(new ServiceBase[] { new FolderWatcher() });
+          //ServiceBase.Run(new ServiceBase[] { new FolderWatcher() });
 
             services.AddDbContext<SlaveDbContext>(options =>
             {

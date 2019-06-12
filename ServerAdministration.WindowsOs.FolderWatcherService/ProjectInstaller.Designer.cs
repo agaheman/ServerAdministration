@@ -33,6 +33,7 @@
             // 
             // folderWathcerServiceProcessInstaller
             // 
+            this.folderWathcerServiceProcessInstaller.Account = System.ServiceProcess.ServiceAccount.LocalSystem;
             this.folderWathcerServiceProcessInstaller.Password = null;
             this.folderWathcerServiceProcessInstaller.Username = null;
             this.folderWathcerServiceInstaller.Description = "سرویس رصد حجم درایو";

@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.ServiceProcess;
 
 namespace ServerAdministration.WindowsOs.FolderWatcherService
@@ -6,29 +8,39 @@ namespace ServerAdministration.WindowsOs.FolderWatcherService
     public partial class FolderWathcerService : ServiceBase
     {
         private FileSystemWatcher myWatcher;
-        private long SizeThreshold;
+        private long SizeThreshold = 470000000;
 
         public FolderWathcerService(string path)
         {
             myWatcher = new FileSystemWatcher(path);
+            myWatcher.NotifyFilter = NotifyFilters.Size;
 
-            myWatcher.Changed += MyWatcher_Changed1; ;
+
+            myWatcher.Changed += MyWatcher_Changed; ;
             myWatcher.EnableRaisingEvents = true;
 
 
             InitializeComponent();
         }
 
-        private void MyWatcher_Changed1(object sender, FileSystemEventArgs e)
+        private void MyWatcher_Changed(object sender, FileSystemEventArgs e)
         {
             var wathcer = sender as FileSystemWatcher;
 
             if (wathcer.NotifyFilter == NotifyFilters.Size)
             {
-                driveInfo = GetDriveInfo(wathcer.Path);
+                
+                var driveInfo = DriveInfo.GetDrives()
+                  .First(d => d.IsReady && d.RootDirectory.ToString() == Path.GetPathRoot(wathcer.Path));
 
-                if (driveInfo.AvailableFreeSpaceByte < SizeThreshold)
-                    throw new NotEnoughDiskSpaceException($"Your database drive free space is {driveInfo.AvailableFreeSpace}");
+                File.WriteAllText(@"F:\log\Service3.txt", $"New Size=: {driveInfo.AvailableFreeSpace }");
+
+                if (driveInfo.AvailableFreeSpace < SizeThreshold)
+                {
+                    
+                    throw new Exception($"Not Enough Disk Space Exception {Environment.NewLine}" +
+                        $"Your {driveInfo.Name} drive free space is {driveInfo.AvailableFreeSpace}");
+                }
             }
         }
 
