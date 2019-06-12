@@ -33,7 +33,7 @@ namespace Common.Utilities
         }
     }
 
-    public class DigitalStorage
+    public static class DigitalStorage
     {
         public static string ByteToHumanReadableSize(long byteCount)
         {
@@ -46,6 +46,16 @@ namespace Common.Utilities
                 len /= 1024;
             }
             return $"{len:0.##} {sizes[order]}";
+        }
+
+        public enum SizeUnits
+        {
+            Byte, KB, MB, GB, TB, PB, EB, ZB, YB
+        }
+
+        public static string ToSize(this Int64 byteValue, SizeUnits unit)
+        {
+            return (byteValue / (double)Math.Pow(1024, (Int64)unit)).ToString("0.00");
         }
     }
 

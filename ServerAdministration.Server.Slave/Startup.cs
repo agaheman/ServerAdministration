@@ -9,6 +9,8 @@ using ServerAdministration.Server.DataAccess.DbContexts;
 using ServerAdministration.Server.DataAccess.Repositories;
 using ServerAdministration.Server.Entities;
 using ServerAdministration.Server.Slave.Services;
+using ServerAdministration.WindowOs;
+using System.ServiceProcess;
 
 namespace ServerAdministration.Server.Slave
 {
@@ -24,7 +26,7 @@ namespace ServerAdministration.Server.Slave
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            ServiceBase.Run(new ServiceBase[] { new FolderWatcher() });
 
             services.AddDbContext<SlaveDbContext>(options =>
             {
