@@ -31,13 +31,17 @@ namespace ServerAdministration.WindowOs
 
         public static DriveInfoViewModel GetDriveInfo(string path)
         {
+
             var driveInfo = DriveInfo.GetDrives()
                   .First(d => d.IsReady && d.RootDirectory.ToString() == Path.GetPathRoot(path));
 
             if (driveInfo == null)
                 throw new DriveNotFoundException();
 
-            return new DriveInfoViewModel()
+            //if (driveInfo.AvailableFreeSpace < SizeThreshold)
+            //{ }
+
+                return new DriveInfoViewModel()
             {
                 Name = driveInfo.Name,
                 VolumeLabel = driveInfo.VolumeLabel,

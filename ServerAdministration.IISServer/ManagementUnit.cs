@@ -78,8 +78,6 @@ namespace ServerAdministration.IISServer
             return result;
         }
 
-
-
         public static List<SiteInfo> GetSitesInfo()
         {
             SitesInfo = new List<SiteInfo>();

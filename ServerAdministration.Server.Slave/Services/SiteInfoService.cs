@@ -4,6 +4,7 @@ using ServerAdministration.Server.DataAccess.Contracts;
 using ServerAdministration.Server.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ServerAdministration.Server.Slave.Services
 {
@@ -54,21 +55,27 @@ namespace ServerAdministration.Server.Slave.Services
         }
 
 
-        public List<SiteIISLog> Map(string siteAppPath, IEnumerable<IISLogParser.IISLogEvent> iISLogEvents)
+        public List<SiteIISLog> Map(string siteAppPath,DateTime lastWriteTime, IEnumerable<IISLogParser.IISLogEvent> iISLogEvents)
         {
             List<SiteIISLog> result = new List<SiteIISLog>();
             foreach (var iISLogEvent in iISLogEvents)
             {
                 result.Add(new SiteIISLog
                 {
+                    LastDateModified = lastWriteTime,
                     SiteAppPath = siteAppPath,
                     SlaveServerId = 0,
                     IISLogEvent = Map(iISLogEvent)
-                });
+                }) ;
             }
             return result;
         }
 
+        public List<SiteIISLog> GetAllIISLogsAfter(DateTime dateTime)
+        {
+            var result = IISLogRepository.TableNoTracking.Where(l => l.LastDateModified > dateTime).ToList();
 
+            return result;
+        }
     }
 }

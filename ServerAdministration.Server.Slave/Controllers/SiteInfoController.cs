@@ -7,6 +7,7 @@ using ServerAdministration.Server.Slave.Services;
 using ServerAdministration.WindowOs;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ServerAdministration.Server.Slave.Controllers
 {
@@ -20,6 +21,17 @@ namespace ServerAdministration.Server.Slave.Controllers
         {
             this.siteInfoService = siteInfoService;
         }
+
+        [HttpGet("[Action]")]
+        public List<SiteIISLog> GetAllIISLogsAfter([FromBody]DateTime dateTime)
+        {
+            var result = siteInfoService.GetAllIISLogsAfter(dateTime);
+
+            return result;
+        }
+
+
+
         [HttpGet("[Action]")]
         public List<SiteInfo> GetSitesInfo()
         {
@@ -55,7 +67,8 @@ namespace ServerAdministration.Server.Slave.Controllers
             foreach (var logfilePath in logFilePaths)
             {
                 var logEvents = logParser.ParseIISLogs(logfilePath);
-                iISLogEvents.AddRange(siteInfoService.Map(site.Name, logEvents));
+                var lastWriteTime = System.IO.File.GetLastWriteTime(logfilePath);
+                iISLogEvents.AddRange(siteInfoService.Map(site.Name, lastWriteTime, logEvents));
             };
 
             siteInfoService.SaveSiteInfoRange(iISLogEvents);

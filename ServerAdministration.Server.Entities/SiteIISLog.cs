@@ -13,6 +13,7 @@ namespace ServerAdministration.Server.Entities
         public int SlaveServerId { get; set; }
 
         public string SiteAppPath { get; set; }
+        public DateTime LastDateModified { get; set; }
         public IISLogEvent IISLogEvent { get; set; }
     }
 }

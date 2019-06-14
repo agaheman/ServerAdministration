@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ServerAdministration.Server.Entities
+﻿namespace ServerAdministration.Server.Entities
 {
     public interface IEntity
     {
