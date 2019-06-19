@@ -16,12 +16,12 @@ namespace ServerAdministration.Server.Slave
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
 
         public void ConfigureServices(IServiceCollection services)
@@ -53,7 +53,7 @@ namespace ServerAdministration.Server.Slave
             //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<ISiteInfoService, SiteInfoService>();
             services.AddScoped<IRepository<SiteIISLog>, RepositorySlave<SiteIISLog>>();
-            services.AddScoped<IRepository<IISLogEvent>, RepositorySlave<IISLogEvent>>();
+            //services.AddScoped<IRepository<IISLogEvent>, RepositorySlave<IISLogEvent>>();
 
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

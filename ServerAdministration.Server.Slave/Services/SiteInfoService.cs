@@ -11,7 +11,6 @@ namespace ServerAdministration.Server.Slave.Services
     public class SiteInfoService : ISiteInfoService
     {
         private readonly IRepository<SiteIISLog> IISLogRepository;
-
         public SiteInfoService(IRepository<SiteIISLog> IISLogRepository)
         {
             this.IISLogRepository = IISLogRepository;

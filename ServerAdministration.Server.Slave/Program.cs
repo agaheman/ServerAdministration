@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace ServerAdministration.Server.Slave
 {
@@ -12,6 +13,13 @@ namespace ServerAdministration.Server.Slave
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+            .ConfigureAppConfiguration((builderContext, config) =>
+            {
+                IHostingEnvironment env = builderContext.HostingEnvironment;
+
+                config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                      .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+            })
+            .UseStartup<Startup>();
     }
 }
