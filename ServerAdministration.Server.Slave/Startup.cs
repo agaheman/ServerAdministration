@@ -4,13 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ServerAdministration.Server.DataAccess.Configurations;
 using ServerAdministration.Server.DataAccess.Contracts;
 using ServerAdministration.Server.DataAccess.DbContexts;
 using ServerAdministration.Server.DataAccess.Repositories;
 using ServerAdministration.Server.Entities;
+using ServerAdministration.Server.Slave.Extensions;
 using ServerAdministration.Server.Slave.Services;
-using ServerAdministration.WindowOs;
-using System.ServiceProcess;
+using Microsoft.Extensions.Options;
+
 
 namespace ServerAdministration.Server.Slave
 {
@@ -26,18 +28,23 @@ namespace ServerAdministration.Server.Slave
 
         public void ConfigureServices(IServiceCollection services)
         {
-          //ServiceBase.Run(new ServiceBase[] { new FolderWatcher() });
+            //ServiceBase.Run(new ServiceBase[] { new FolderWatcher() });
 
             services.AddDbContext<SlaveDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection"),
+                                                            b => b.MigrationsAssembly("ServerAdministration.Server.Slave"));
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddOptions();
+            services.ConfigureWritable<ServerConfiguration>(Configuration.GetSection("ServerConfiguration"), "appsettings.json");
+
+
             services.AddScoped<ISiteInfoService, SiteInfoService>();
-            services.AddScoped< IRepository<IISLogEvent>,RepositorySlave<IISLogEvent>>();
+            services.AddScoped<IRepository<IISLogEvent>, RepositorySlave<IISLogEvent>>();
 
 
         }
@@ -45,7 +52,8 @@ namespace ServerAdministration.Server.Slave
         {
             services.AddDbContext<SlaveDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DevelopmentConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DevelopmentConnection"),
+                                                            b => b.MigrationsAssembly("ServerAdministration.Server.Slave"));
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -53,7 +61,14 @@ namespace ServerAdministration.Server.Slave
             //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<ISiteInfoService, SiteInfoService>();
             services.AddScoped<IRepository<SiteIISLog>, RepositorySlave<SiteIISLog>>();
-            //services.AddScoped<IRepository<IISLogEvent>, RepositorySlave<IISLogEvent>>();
+            services.AddSingleton<IConfiguration>(Configuration);
+
+            // Add functionality to inject IOptions<T>
+            services.AddOptions();
+
+            var serverConfigurationSection = Configuration.GetSection("ServerConfiguration");
+            
+            services.ConfigureWritable<ServerConfiguration>(Configuration.GetSection("ServerConfiguration"), "appsettings.json");
 
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

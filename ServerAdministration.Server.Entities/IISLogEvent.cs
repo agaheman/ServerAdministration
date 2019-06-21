@@ -4,6 +4,7 @@ namespace ServerAdministration.Server.Entities
 {
     public class IISLogEvent:IEntity
     {
+        public string Id { get; set; }
         public string ClientIp { get; set; }
         public int? ServerPort { get; set; }
         public string ServerIp { get; set; }

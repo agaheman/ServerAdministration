@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServerAdministration.Server.DataAccess.DbContexts;
 
-namespace ServerAdministration.Server.DataAccess.Migrations.Slave
+namespace ServerAdministration.Server.Slave.Migrations.Slave
 {
     [DbContext(typeof(SlaveDbContext))]
-    [Migration("20190611112351_Initial")]
+    [Migration("20190620191107_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,9 +23,8 @@ namespace ServerAdministration.Server.DataAccess.Migrations.Slave
 
             modelBuilder.Entity("ServerAdministration.Server.Entities.IISLogEvent", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClientIp");
 
@@ -71,7 +70,7 @@ namespace ServerAdministration.Server.DataAccess.Migrations.Slave
 
                     b.HasKey("Id");
 
-                    b.ToTable("IISLogEvents");
+                    b.ToTable("IISLogEvent");
                 });
 
             modelBuilder.Entity("ServerAdministration.Server.Entities.SiteIISLog", b =>
@@ -80,7 +79,9 @@ namespace ServerAdministration.Server.DataAccess.Migrations.Slave
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("IISLogEventId");
+                    b.Property<string>("IISLogEventId");
+
+                    b.Property<DateTime>("LastDateModified");
 
                     b.Property<string>("SiteAppPath");
 

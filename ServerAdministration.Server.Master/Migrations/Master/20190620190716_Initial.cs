@@ -2,18 +2,17 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ServerAdministration.Server.DataAccess.Migrations.Slave
+namespace ServerAdministration.Server.Master.Migrations.Master
 {
     public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "IISLogEvents",
+                name: "IISLogEvent",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<string>(nullable: false),
                     ClientIp = table.Column<string>(nullable: true),
                     ServerPort = table.Column<int>(nullable: true),
                     ServerIp = table.Column<string>(nullable: true),
@@ -38,7 +37,22 @@ namespace ServerAdministration.Server.DataAccess.Migrations.Slave
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IISLogEvents", x => x.Id);
+                    table.PrimaryKey("PK_IISLogEvent", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Insurances",
+                columns: table => new
+                {
+                    InsuranceId = table.Column<byte>(nullable: false),
+                    ServerUrl = table.Column<string>(nullable: true),
+                    Version = table.Column<string>(nullable: true),
+                    IsActive = table.Column<bool>(nullable: false),
+                    LastDataGatheringDateTime = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Insurances", x => x.InsuranceId);
                 });
 
             migrationBuilder.CreateTable(
@@ -49,15 +63,16 @@ namespace ServerAdministration.Server.DataAccess.Migrations.Slave
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     SlaveServerId = table.Column<int>(nullable: false),
                     SiteAppPath = table.Column<string>(nullable: true),
-                    IISLogEventId = table.Column<long>(nullable: true)
+                    LastDateModified = table.Column<DateTime>(nullable: false),
+                    IISLogEventId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SiteIISLogs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SiteIISLogs_IISLogEvents_IISLogEventId",
+                        name: "FK_SiteIISLogs_IISLogEvent_IISLogEventId",
                         column: x => x.IISLogEventId,
-                        principalTable: "IISLogEvents",
+                        principalTable: "IISLogEvent",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -71,10 +86,13 @@ namespace ServerAdministration.Server.DataAccess.Migrations.Slave
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Insurances");
+
+            migrationBuilder.DropTable(
                 name: "SiteIISLogs");
 
             migrationBuilder.DropTable(
-                name: "IISLogEvents");
+                name: "IISLogEvent");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Common.Utilities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+using ServerAdministration.Server.Slave.Configurations;
+using ServerAdministration.Server.Slave.Extensions;
 
 namespace ServerAdministration.Server.Slave.Controllers
 {
@@ -8,17 +9,21 @@ namespace ServerAdministration.Server.Slave.Controllers
     [ApiController]
     public class ServerConfigurationController : ControllerBase
     {
-        private readonly IConfiguration configuration;
+        private readonly IWritableOptions<ServerConfiguration> serverConfiguratinOption;
 
-        public ServerConfigurationController(IConfiguration configuration)
+        public ServerConfigurationController(IWritableOptions<ServerConfiguration> serverConfiguratinOption)
         {
-            this.configuration = configuration;
+            this.serverConfiguratinOption = serverConfiguratinOption;
         }
         [HttpPost("[Action]")]
-        public void Initialize(int insuranceId)
+        public void Initialize([FromBody]ServerConfiguration serverConfiguration)
         {
-            var asd = configuration.GetSection("InsuranceId");
-            AppSettings.AddOrUpdate("InsuranceId", insuranceId.ToString());
+            serverConfiguratinOption.Update(
+                opt =>
+                {
+                    opt.ServerId = serverConfiguration.ServerId;
+                    opt.ServerName = serverConfiguration.ServerName;
+                });
         }
     }
 }

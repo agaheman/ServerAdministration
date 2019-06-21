@@ -14,15 +14,15 @@ namespace ServerAdministration.Server.DataAccess.Repositories
 {
     public class RepositoryMaster<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
-        protected readonly DbContext ServerDbContext;
+        protected readonly MasterDbContext MasterDbContext;
         public DbSet<TEntity> Entities { get; }
         public virtual IQueryable<TEntity> Table => Entities;
         public virtual IQueryable<TEntity> TableNoTracking => Entities.AsNoTracking();
 
         public RepositoryMaster(MasterDbContext dbContext)
         {
-            ServerDbContext = dbContext;
-            Entities = ServerDbContext.Set<TEntity>(); // City => Cities
+            MasterDbContext = dbContext;
+            Entities = MasterDbContext.Set<TEntity>(); // City => Cities
 
         }
 
@@ -37,7 +37,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             Assert.NotNull(entity, nameof(entity));
             await Entities.AddAsync(entity, cancellationToken).ConfigureAwait(false);
             if (saveNow)
-                await ServerDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+                await MasterDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true)
@@ -45,7 +45,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             Assert.NotNull(entities, nameof(entities));
             await Entities.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
             if (saveNow)
-                await ServerDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+                await MasterDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken, bool saveNow = true)
@@ -53,7 +53,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             Assert.NotNull(entity, nameof(entity));
             Entities.Update(entity);
             if (saveNow)
-                await ServerDbContext.SaveChangesAsync(cancellationToken);
+                await MasterDbContext.SaveChangesAsync(cancellationToken);
         }
 
         public virtual async Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true)
@@ -61,7 +61,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             Assert.NotNull(entities, nameof(entities));
             Entities.UpdateRange(entities);
             if (saveNow)
-                await ServerDbContext.SaveChangesAsync(cancellationToken);
+                await MasterDbContext.SaveChangesAsync(cancellationToken);
         }
 
         public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken, bool saveNow = true)
@@ -69,7 +69,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             Assert.NotNull(entity, nameof(entity));
             Entities.Remove(entity);
             if (saveNow)
-                await ServerDbContext.SaveChangesAsync(cancellationToken);
+                await MasterDbContext.SaveChangesAsync(cancellationToken);
         }
 
         public virtual async Task DeleteRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true)
@@ -77,7 +77,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             Assert.NotNull(entities, nameof(entities));
             Entities.RemoveRange(entities);
             if (saveNow)
-                await ServerDbContext.SaveChangesAsync(cancellationToken);
+                await MasterDbContext.SaveChangesAsync(cancellationToken);
         }
         #endregion
 
@@ -92,7 +92,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             Assert.NotNull(entity, nameof(entity));
             Entities.Add(entity);
             if (saveNow)
-                ServerDbContext.SaveChanges();
+                MasterDbContext.SaveChanges();
         }
 
         public virtual void AddRange(IEnumerable<TEntity> entities, bool saveNow = true)
@@ -100,14 +100,14 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             Assert.NotNull(entities, nameof(entities));
             Entities.AddRange(entities);
             if (saveNow)
-                ServerDbContext.SaveChanges();
+                MasterDbContext.SaveChanges();
         }
 
         public virtual void Update(TEntity entity, bool saveNow = true)
         {
             Assert.NotNull(entity, nameof(entity));
             Entities.Update(entity);
-            ServerDbContext.SaveChanges();
+            MasterDbContext.SaveChanges();
         }
 
         public virtual void UpdateRange(IEnumerable<TEntity> entities, bool saveNow = true)
@@ -115,7 +115,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             Assert.NotNull(entities, nameof(entities));
             Entities.UpdateRange(entities);
             if (saveNow)
-                ServerDbContext.SaveChanges();
+                MasterDbContext.SaveChanges();
         }
 
         public virtual void Delete(TEntity entity, bool saveNow = true)
@@ -123,7 +123,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             Assert.NotNull(entity, nameof(entity));
             Entities.Remove(entity);
             if (saveNow)
-                ServerDbContext.SaveChanges();
+                MasterDbContext.SaveChanges();
         }
 
         public virtual void DeleteRange(IEnumerable<TEntity> entities, bool saveNow = true)
@@ -131,7 +131,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             Assert.NotNull(entities, nameof(entities));
             Entities.RemoveRange(entities);
             if (saveNow)
-                ServerDbContext.SaveChanges();
+                MasterDbContext.SaveChanges();
         }
         #endregion
 
@@ -139,7 +139,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
         public virtual void Detach(TEntity entity)
         {
             Assert.NotNull(entity, nameof(entity));
-            var entry = ServerDbContext.Entry(entity);
+            var entry = MasterDbContext.Entry(entity);
             if (entry != null)
                 entry.State = EntityState.Detached;
         }
@@ -147,7 +147,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
         public virtual void Attach(TEntity entity)
         {
             Assert.NotNull(entity, nameof(entity));
-            if (ServerDbContext.Entry(entity).State == EntityState.Detached)
+            if (MasterDbContext.Entry(entity).State == EntityState.Detached)
                 Entities.Attach(entity);
         }
         #endregion
@@ -158,7 +158,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
         {
             Attach(entity);
 
-            var collection = ServerDbContext.Entry(entity).Collection(collectionProperty);
+            var collection = MasterDbContext.Entry(entity).Collection(collectionProperty);
             if (!collection.IsLoaded)
                 await collection.LoadAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -167,7 +167,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             where TProperty : class
         {
             Attach(entity);
-            var collection = ServerDbContext.Entry(entity).Collection(collectionProperty);
+            var collection = MasterDbContext.Entry(entity).Collection(collectionProperty);
             if (!collection.IsLoaded)
                 collection.Load();
         }
@@ -176,7 +176,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             where TProperty : class
         {
             Attach(entity);
-            var reference = ServerDbContext.Entry(entity).Reference(referenceProperty);
+            var reference = MasterDbContext.Entry(entity).Reference(referenceProperty);
             if (!reference.IsLoaded)
                 await reference.LoadAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -185,7 +185,7 @@ namespace ServerAdministration.Server.DataAccess.Repositories
             where TProperty : class
         {
             Attach(entity);
-            var reference = ServerDbContext.Entry(entity).Reference(referenceProperty);
+            var reference = MasterDbContext.Entry(entity).Reference(referenceProperty);
             if (!reference.IsLoaded)
                 reference.Load();
         }

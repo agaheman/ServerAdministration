@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServerAdministration.Server.DataAccess.DbContexts;
 
-namespace ServerAdministration.Server.DataAccess.Migrations.Slave
+namespace ServerAdministration.Server.Master.Migrations.Master
 {
-    [DbContext(typeof(SlaveDbContext))]
-    partial class SlaveDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MasterDbContext))]
+    [Migration("20190620190716_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,9 +23,8 @@ namespace ServerAdministration.Server.DataAccess.Migrations.Slave
 
             modelBuilder.Entity("ServerAdministration.Server.Entities.IISLogEvent", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClientIp");
 
@@ -69,7 +70,24 @@ namespace ServerAdministration.Server.DataAccess.Migrations.Slave
 
                     b.HasKey("Id");
 
-                    b.ToTable("IISLogEvents");
+                    b.ToTable("IISLogEvent");
+                });
+
+            modelBuilder.Entity("ServerAdministration.Server.Entities.Insurance", b =>
+                {
+                    b.Property<byte>("InsuranceId");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<DateTime>("LastDataGatheringDateTime");
+
+                    b.Property<string>("ServerUrl");
+
+                    b.Property<string>("Version");
+
+                    b.HasKey("InsuranceId");
+
+                    b.ToTable("Insurances");
                 });
 
             modelBuilder.Entity("ServerAdministration.Server.Entities.SiteIISLog", b =>
@@ -78,7 +96,9 @@ namespace ServerAdministration.Server.DataAccess.Migrations.Slave
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("IISLogEventId");
+                    b.Property<string>("IISLogEventId");
+
+                    b.Property<DateTime>("LastDateModified");
 
                     b.Property<string>("SiteAppPath");
 

@@ -6,10 +6,10 @@ using System.Net;
 
 namespace ServerAdministration.Server.Master.Services
 {
-    public class Administration
+    public class AdministrationService:IAdministrationService
     {
         private readonly IRepository<Insurance> insuranceRepository;
-        public Administration(IRepository<Insurance> insuranceRepository)
+        public AdministrationService(IRepository<Insurance> insuranceRepository)
         {
             this.insuranceRepository = insuranceRepository;
         }
@@ -46,13 +46,12 @@ namespace ServerAdministration.Server.Master.Services
         {
             var apiUrl = $"{insurance.ServerUrl}/api/SiteInfo/GetAllIISLogsAfter";
             //var result = RestClientHelper.Post<PayeshgaranRequestDto, PayeshgaranResponseDto>(webServiceAddress, requestedData);
-            var requestResult = RestClientHelper.Get<DateTime, List<SiteIISLog>>(apiUrl, insurance.LastDataGatheringDateTime);
+            var requestResult = RestClientHelper.Get<DateTime, List<SiteIISLog>>(apiUrl, insurance.LastDataGatheringDateTime??DateTime.MinValue);
 
             if (requestResult.StatusCode == HttpStatusCode.OK)
                 return requestResult.Data;
 
             return null;
         }
-
     }
 }

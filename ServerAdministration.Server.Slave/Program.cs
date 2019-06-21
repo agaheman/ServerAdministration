@@ -20,6 +20,8 @@ namespace ServerAdministration.Server.Slave
                 config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                       .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
             })
+            .UseKestrel()
+            .UseIISIntegration()
             .UseStartup<Startup>();
     }
 }

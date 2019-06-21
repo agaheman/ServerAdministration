@@ -13,7 +13,7 @@ namespace ServerAdministration.Server.Entities
         public string Version { get; set; }
         public bool IsActive { get; set; }
 
-        public DateTime LastDataGatheringDateTime { get; set; }
+        public DateTime? LastDataGatheringDateTime { get; set; }
 
         public InsurancesEnum InsuranceEnum
         {
@@ -24,3 +24,4 @@ namespace ServerAdministration.Server.Entities
         }
     }
 }
+ 

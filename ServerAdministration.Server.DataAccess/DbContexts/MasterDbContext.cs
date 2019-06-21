@@ -8,6 +8,8 @@ namespace ServerAdministration.Server.DataAccess.DbContexts
     {
         public DbSet<Insurance> Insurances { get; set; }
         public DbSet<SiteIISLog> SiteIISLogs { get; set; }
+
+
         public MasterDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
         {
 
