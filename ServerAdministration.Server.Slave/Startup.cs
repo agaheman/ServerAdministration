@@ -66,9 +66,9 @@ namespace ServerAdministration.Server.Slave
             // Add functionality to inject IOptions<T>
             services.AddOptions();
 
-            var serverConfigurationSection = Configuration.GetSection("ServerConfiguration");
+            //var serverConfigurationSection = Configuration.GetSection("ServerConfiguration");
             
-            services.ConfigureWritable<ServerConfiguration>(Configuration.GetSection("ServerConfiguration"), "appsettings.json");
+            //services.ConfigureWritable<ServerConfiguration>(Configuration.GetSection("ServerConfiguration"), "appsettings.json");
 
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
