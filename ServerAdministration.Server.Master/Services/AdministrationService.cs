@@ -27,19 +27,18 @@ namespace ServerAdministration.Server.Master.Services
             foreach (var insurance in insurances)
             {
                 var serverSitesData = GetDataFrom(insurance);
-
-                siteIISLogs.AddRange(serverSitesData);
-
-
-                try
+                if (serverSitesData!=null)
                 {
-
-                    insuranceRepository.Update(insurance, true);
-                }
-                catch (System.Exception)
-                {
-                    continue;
-                }
+                    try
+                    {
+                        siteIISLogs.AddRange(serverSitesData);
+                        insuranceRepository.Update(insurance, true);
+                    }
+                    catch (System.Exception)
+                    {
+                        continue;
+                    }
+                } 
             }
         }
         public List<SiteIISLog> GetDataFrom(Insurance insurance)

@@ -25,6 +25,10 @@ namespace ServerAdministration.Server.Slave.Controllers
         [HttpGet("[Action]")]
         public List<SiteIISLog> GetAllIISLogsAfter([FromBody]DateTime dateTime)
         {
+            if (dateTime==null)
+            {
+                dateTime = DateTime.Now;
+            }
             var result = siteInfoService.GetAllIISLogsAfter(dateTime);
 
             return result;
