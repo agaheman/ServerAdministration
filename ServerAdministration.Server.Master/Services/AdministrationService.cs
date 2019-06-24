@@ -41,11 +41,23 @@ namespace ServerAdministration.Server.Master.Services
                 } 
             }
         }
+        public List<SiteIISLog> GetDataByRestSharpFrom(Insurance insurance)
+        {
+            var apiUrl = $"{insurance.ServerUrl}/api/SiteInfo/GetAllIISLogsAfter";
+            //var result = RestClientHelper.Post<PayeshgaranRequestDto, PayeshgaranResponseDto>(webServiceAddress, requestedData);
+            var requestResult = RestClientHelper.Get<DateTime?, List<SiteIISLog>>(apiUrl, insurance.LastDataGatheringDateTime);
+
+            if (requestResult.StatusCode == HttpStatusCode.OK)
+                return requestResult.Data;
+
+            return null;
+        }
+
         public List<SiteIISLog> GetDataFrom(Insurance insurance)
         {
             var apiUrl = $"{insurance.ServerUrl}/api/SiteInfo/GetAllIISLogsAfter";
             //var result = RestClientHelper.Post<PayeshgaranRequestDto, PayeshgaranResponseDto>(webServiceAddress, requestedData);
-            var requestResult = RestClientHelper.Get<DateTime, List<SiteIISLog>>(apiUrl, insurance.LastDataGatheringDateTime??DateTime.MinValue);
+            var requestResult = RestClientHelper.Get<DateTime?, List<SiteIISLog>>(apiUrl, insurance.LastDataGatheringDateTime);
 
             if (requestResult.StatusCode == HttpStatusCode.OK)
                 return requestResult.Data;

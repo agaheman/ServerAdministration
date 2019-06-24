@@ -10,4 +10,8 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ServerAdministration.Server.Entities\ServerAdministration.Server.Entities.csproj" />
+  </ItemGroup>
+
 </Project>
