@@ -19,8 +19,8 @@ namespace ServerAdministration.Server.Master
                 try
                 {
                     var context = services.GetRequiredService<MasterDbContext>();
-                    MasterDbInitializer.Initialize(context);
-                    MasterDbInitializer.SeedNewData(context);
+                    DbInitializer.InitializeMasterDb(context);
+                    DbInitializer.MasterDbSeedNewData(context);
                 }
                 catch (Exception ex)
                 {

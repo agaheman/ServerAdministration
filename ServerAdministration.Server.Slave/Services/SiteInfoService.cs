@@ -70,8 +70,13 @@ namespace ServerAdministration.Server.Slave.Services
             return result;
         }
 
-        public List<SiteIISLog> GetAllIISLogsAfter(DateTime dateTime)
+        public List<SiteIISLog> GetAllIISLogsAfter(DateTime? dateTime)
         {
+            if (dateTime == null)
+            {
+                throw new ArgumentNullException(nameof(dateTime));
+            }
+
             var result = IISLogRepository.TableNoTracking.Where(l => l.LastDateModified > dateTime).ToList();
 
             return result;

@@ -11,6 +11,6 @@ namespace ServerAdministration.Server.Slave.Services
         List<SiteIISLog> Map(string siteAppPath,DateTime lastWriteTime, IEnumerable<IISLogParser.IISLogEvent> iISLogEvents);
         void SaveSiteInfo(SiteIISLog siteIISLog);
         void SaveSiteInfoRange(List<SiteIISLog> siteIISLogs);
-        List<SiteIISLog> GetAllIISLogsAfter(DateTime dateTime);
+        List<SiteIISLog> GetAllIISLogsAfter(DateTime? dateTime);
     }
 }

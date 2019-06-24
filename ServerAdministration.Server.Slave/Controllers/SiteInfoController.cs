@@ -22,14 +22,14 @@ namespace ServerAdministration.Server.Slave.Controllers
             this.siteInfoService = siteInfoService;
         }
 
-        [HttpGet("[Action]")]
-        public List<SiteIISLog> GetAllIISLogsAfter([FromBody]DateTime dateTime)
+        public class LastLogDate
         {
-            if (dateTime==null)
-            {
-                dateTime = DateTime.Now;
-            }
-            var result = siteInfoService.GetAllIISLogsAfter(dateTime);
+            public DateTime? DateTime { get; set; }
+        }
+        [HttpGet("[Action]")]
+        public List<SiteIISLog> GetAllIISLogsAfter(LastLogDate logDate)
+        {
+            var result = siteInfoService.GetAllIISLogsAfter(logDate.DateTime);
 
             return result;
         }

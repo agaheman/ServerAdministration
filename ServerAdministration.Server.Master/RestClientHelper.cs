@@ -33,8 +33,17 @@ namespace ServerAdministration.Server.Master
 
             if (bearerToken != null)
                 request.AddHeader("Authorization", $"Bearer {bearerToken}");
+            IRestResponse<TResponse> response;
+            try
+            {
+                response = client.Execute<TResponse>(request);
+                return response;
+            }
+            catch (System.Exception)
+            {
 
-            return client.Execute<TResponse>(request);
+                throw;
+            }
         }
     }
 }

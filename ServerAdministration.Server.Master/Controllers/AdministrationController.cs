@@ -20,7 +20,9 @@ namespace ServerAdministration.Server.Master.Controllers
         [HttpGet("[Action]")]
         public void GetDataFromAllInsurances()
         {
-            administrationService.GetDataFromAllInsurances();
+            //administrationService.GetDataFromAllInsurances();
+           administrationService.GetDataFromAllInsurancesAsync();
+
         }
 
         //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

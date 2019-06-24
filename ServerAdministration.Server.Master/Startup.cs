@@ -27,6 +27,7 @@ namespace ServerAdministration.Server.Master
 
         public IConfiguration Configuration { get; }
 
+
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -59,9 +60,9 @@ namespace ServerAdministration.Server.Master
             services.AddScoped<IRepository<Insurance>, RepositoryMaster<Insurance>>();
         }
 
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -77,5 +78,7 @@ namespace ServerAdministration.Server.Master
             app.UseHttpsRedirection();
             app.UseMvcWithDefaultRoute();
         }
+
+
     }
 }
