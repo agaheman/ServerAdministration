@@ -30,11 +30,10 @@ namespace ServerAdministration.Server.Slave.Controllers
         public List<SiteIISLog> GetAllIISLogsAfter(LastLogDate logDate)
         {
             var result = siteInfoService.GetAllIISLogsAfter(logDate.DateTime);
-
             return result;
         }
 
-
+        
 
         [HttpGet("[Action]")]
         public List<SiteInfo> GetSitesInfo()

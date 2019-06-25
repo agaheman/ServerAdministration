@@ -52,11 +52,10 @@ namespace ServerAdministration.Server.Slave.Services
                 Username = iISLogEvent.csUsername
             };
         }
-
-
         public List<SiteIISLog> Map(string siteAppPath,DateTime lastWriteTime, IEnumerable<IISLogParser.IISLogEvent> iISLogEvents)
         {
             List<SiteIISLog> result = new List<SiteIISLog>();
+
             foreach (var iISLogEvent in iISLogEvents)
             {
                 result.Add(new SiteIISLog
@@ -65,7 +64,7 @@ namespace ServerAdministration.Server.Slave.Services
                     SiteAppPath = siteAppPath,
                     SlaveServerId = 0,
                     IISLogEvent = Map(iISLogEvent)
-                }) ;
+                });
             }
             return result;
         }

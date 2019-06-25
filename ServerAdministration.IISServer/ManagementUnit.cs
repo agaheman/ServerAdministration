@@ -3,25 +3,32 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ServerAdministration.Server.DataAccess.Contracts;
+using ServerAdministration.Server.Entities;
 
 namespace ServerAdministration.IISServer
 {
     public class ManagementUnit
     {
         public static ServerManager ServerManager = new ServerManager();
-        private static List<SiteInfo> SitesInfo;
-
+        private static List<SiteInfo> SitesInfos;
+        private static IRepository<SiteIISLog> iISLogRepository;
+        public ManagementUnit(IRepository<SiteIISLog> IISLogRepository)
+        {
+            iISLogRepository = IISLogRepository;
+        }
         public static SiteInfo GetSiteInfo(Site site)
         {
-            var siteInformation = new SiteInfo();
-
-            siteInformation.SiteId = site.Id;
-            siteInformation.SiteName = site.Name;
-            siteInformation.TraceFailedRequest = new TraceFailedRequest
+            var siteInformation = new SiteInfo
             {
-                Directory = site.TraceFailedRequestsLogging.Directory,
-                Enabled = site.TraceFailedRequestsLogging.Enabled,
-                MaxLogFiles = site.TraceFailedRequestsLogging.MaxLogFiles
+                SiteId = site.Id,
+                SiteName = site.Name,
+                TraceFailedRequest = new TraceFailedRequest
+                {
+                    Directory = site.TraceFailedRequestsLogging.Directory,
+                    Enabled = site.TraceFailedRequestsLogging.Enabled,
+                    MaxLogFiles = site.TraceFailedRequestsLogging.MaxLogFiles
+                }
             };
 
             List<App> applications = new List<App>();
@@ -80,75 +87,77 @@ namespace ServerAdministration.IISServer
 
         public static List<SiteInfo> GetSitesInfo()
         {
-            SitesInfo = new List<SiteInfo>();
+            SitesInfos = new List<SiteInfo>();
 
             foreach (var site in ServerManager.Sites)
             {
+                SiteInfo siteInformation = GetSiteInfoFrom(site);
 
-                var siteInformation = new SiteInfo();
+                SitesInfos.Add(siteInformation);
 
+            }
 
-                siteInformation.SiteId = site.Id;
-                siteInformation.SiteName = site.Name;
-                //siteInformation.State = site.State;
-                siteInformation.TraceFailedRequest = new TraceFailedRequest
+            return SitesInfos;
+        }
+
+        private static SiteInfo GetSiteInfoFrom(Site site)
+        {
+            var siteInformation = new SiteInfo
+            {
+                SiteId = site.Id,
+                SiteName = site.Name,
+
+                TraceFailedRequest = new TraceFailedRequest
                 {
                     Directory = site.TraceFailedRequestsLogging.Directory,
                     Enabled = site.TraceFailedRequestsLogging.Enabled,
                     MaxLogFiles = site.TraceFailedRequestsLogging.MaxLogFiles
-                };
-
-                List<App> applications = new List<App>();
-
-                foreach (var application in site.Applications)
-                {
-                    applications.Add(new App
-                    {
-                        Path = application.Path,
-                        ApplicationPoolName = application.ApplicationPoolName,
-                        EnabledProtocols = application.EnabledProtocols,
-                        EnabledPreload = (bool)application.Attributes["preloadEnabled"].Value
-                    });
                 }
+            };
 
-                siteInformation.Applications = applications;
+            List<App> applications = new List<App>();
 
-                siteInformation.ServerAutoStart = site.ServerAutoStart;
-                siteInformation.LogFile = new LogFile
+            foreach (var application in site.Applications)
+            {
+                applications.Add(new App
                 {
-                    Directory = site.LogFile.Directory,
-                    Enabled = site.LogFile.Enabled,
-                    LocalTimeRollover = site.LogFile.LocalTimeRollover,
-                    LogExtFileFlags = site.LogFile.LogExtFileFlags,
-                    LogFormat = site.LogFile.LogFormat,
-                    LogTargetW3C = site.LogFile.LogTargetW3C,
-                    Period = site.LogFile.Period,
-                    TruncateSize = site.LogFile.TruncateSize,
-                };
-
-
-
-                List<Binding> bindings = new List<Binding>();
-                foreach (var binding in site.Bindings)
-                {
-                    bindings.Add(new Binding
-                    {
-                        BindingInformation = binding.BindingInformation,
-                        Host = binding.Host,
-                        Protocol = binding.Protocol
-                    });
-                }
-
-                siteInformation.Bindings = bindings;
-
-
-
-
-                SitesInfo.Add(siteInformation);
-
+                    Path = application.Path,
+                    ApplicationPoolName = application.ApplicationPoolName,
+                    EnabledProtocols = application.EnabledProtocols,
+                    EnabledPreload = (bool)application.Attributes["preloadEnabled"].Value
+                });
             }
 
-            return SitesInfo;
+            siteInformation.Applications = applications;
+
+            siteInformation.ServerAutoStart = site.ServerAutoStart;
+            siteInformation.LogFile = new LogFile
+            {
+                Directory = site.LogFile.Directory,
+                Enabled = site.LogFile.Enabled,
+                LocalTimeRollover = site.LogFile.LocalTimeRollover,
+                LogExtFileFlags = site.LogFile.LogExtFileFlags,
+                LogFormat = site.LogFile.LogFormat,
+                LogTargetW3C = site.LogFile.LogTargetW3C,
+                Period = site.LogFile.Period,
+                TruncateSize = site.LogFile.TruncateSize,
+            };
+
+
+
+            List<Binding> bindings = new List<Binding>();
+            foreach (var binding in site.Bindings)
+            {
+                bindings.Add(new Binding
+                {
+                    BindingInformation = binding.BindingInformation,
+                    Host = binding.Host,
+                    Protocol = binding.Protocol
+                });
+            }
+
+            siteInformation.Bindings = bindings;
+            return siteInformation;
         }
 
         public const string RequestFilteringSectionName = "system.webServer/security/requestFiltering";
@@ -207,6 +216,73 @@ namespace ServerAdministration.IISServer
             return logDirectory.GetFiles("*.log")
                 .Where(f => f.LastWriteTime > DateTime.Now.AddHours(-7))
                 .Select(f => f.FullName).ToList();
+        }
+
+        public static SiteInfo GetSiteByLogPath(string filePath)
+        {
+            //GetSiteBy()
+            for (int i = 0; i < ServerManager.Sites.Count; i++)
+            {
+                if (ServerManager.Sites[i].LogFile.Directory == Path.GetDirectoryName(filePath))
+                {
+                    return GetSiteInfoFrom(ServerManager.Sites[i]);
+                }
+            }
+
+            throw new Exception("Site of this log file does not found.");
+        }
+        public static void SaveParsedLog(FileInfo logFileInfo)
+        {
+            SiteInfo siteInfo = GetSiteByLogPath(logFileInfo.FullName);
+            LogParser logParser = new LogParser();
+
+            var logEvents = logParser.ParseIISLogs(logFileInfo);
+
+            iISLogRepository.AddRange(Map(siteInfo.SiteName, logFileInfo.LastWriteTime, logEvents),true);
+        }
+
+        public static IISLogEvent Map(IISLogParser.IISLogEvent iISLogEvent)
+        {
+            return new IISLogEvent
+            {
+                ClientIp = iISLogEvent.cIp,
+                Computername = iISLogEvent.sComputername,
+                Cookie = iISLogEvent.csCookie,
+                DateTimeEvent = iISLogEvent.DateTimeEvent,
+                Host = iISLogEvent.csHost,
+                Method = iISLogEvent.csMethod,
+                ProtocolStatus = iISLogEvent.scStatus,
+                ProtocolSubstatus = iISLogEvent.scSubstatus,
+                ProtocolVersion = iISLogEvent.csVersion,
+                SentBytes = iISLogEvent.scBytes,
+                RecievedBytes = iISLogEvent.csBytes,
+                Win32Status = iISLogEvent.scWin32Status,
+                Referer = iISLogEvent.csReferer,
+                ServerIp = iISLogEvent.sIp,
+                ServerPort = iISLogEvent.sPort,
+                Sitename = iISLogEvent.sSitename,
+                TimeTaken = iISLogEvent.timeTaken,
+                UriQuery = iISLogEvent.csUriQuery,
+                UriStem = iISLogEvent.csUriStem,
+                UserAgent = iISLogEvent.csUserAgent,
+                Username = iISLogEvent.csUsername
+            };
+        }
+        public static List<SiteIISLog> Map(string siteAppPath, DateTime lastWriteTime, IEnumerable<IISLogParser.IISLogEvent> iISLogEvents)
+        {
+            List<SiteIISLog> result = new List<SiteIISLog>();
+
+            foreach (var iISLogEvent in iISLogEvents)
+            {
+                result.Add(new SiteIISLog
+                {
+                    LastDateModified = lastWriteTime,
+                    SiteAppPath = siteAppPath,
+                    SlaveServerId = 0,
+                    IISLogEvent = Map(iISLogEvent)
+                });
+            }
+            return result;
         }
     }
 }

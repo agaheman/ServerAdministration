@@ -19,5 +19,18 @@ namespace ServerAdministration.IISServer
             return logs;
         }
 
+        public IEnumerable<IISLogEvent> ParseIISLogs(System.IO.FileInfo logFileInfo)
+        {
+            List<IISLogEvent> logs = new List<IISLogEvent>();
+            using (ParserEngine parser = new ParserEngine(logFileInfo.FullName))
+            {
+                while (parser.MissingRecords)
+                {
+                    logs = parser.ParseLog().ToList();
+                }
+            }
+            return logs;
+        }
+
     }
 }

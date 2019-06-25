@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+
 namespace ServerAdministration.Server.DataAccess.Contracts
 {
     public interface IRepository<TEntity> where TEntity : class, IEntity

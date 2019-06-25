@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
+using System.Collections.Generic;
 
 namespace ServerAdministration.WindowsOs.FolderWatcherService
 {
@@ -10,18 +11,35 @@ namespace ServerAdministration.WindowsOs.FolderWatcherService
         private FileSystemWatcher myWatcher;
         private long SizeThreshold = 470000000;
 
-        public FolderWathcerService(string path)
+        public FolderWathcerService(List<string> paths)
         {
-            myWatcher = new FileSystemWatcher(path);
-            myWatcher.NotifyFilter = NotifyFilters.Size;
+            foreach (var path in paths)
+            {
+                var fileSystemWatcher = new FileSystemWatcher
+                {
+                    Path = path,
+                    EnableRaisingEvents = true,
+                };
 
-
-            myWatcher.Changed += MyWatcher_Changed; ;
-            myWatcher.EnableRaisingEvents = true;
+                fileSystemWatcher.Created += MyWatcher_Created;
+            }
 
 
             InitializeComponent();
         }
+
+        private void MyWatcher_Created(object sender, FileSystemEventArgs e)
+        {
+            var wathcer = sender as FileSystemWatcher;
+            DirectoryInfo logDirectory = new DirectoryInfo(wathcer.Path);
+
+            var fileToParse = logDirectory.GetFiles("*.log")
+                .OrderByDescending(f => f.LastWriteTime)
+                .ElementAt(2);
+
+            IISServer.ManagementUnit.SaveParsedLog(fileToParse);
+        }
+
 
         private void MyWatcher_Changed(object sender, FileSystemEventArgs e)
         {
@@ -29,7 +47,7 @@ namespace ServerAdministration.WindowsOs.FolderWatcherService
 
             if (wathcer.NotifyFilter == NotifyFilters.Size)
             {
-                
+
                 var driveInfo = DriveInfo.GetDrives()
                   .First(d => d.IsReady && d.RootDirectory.ToString() == Path.GetPathRoot(wathcer.Path));
 
@@ -37,7 +55,7 @@ namespace ServerAdministration.WindowsOs.FolderWatcherService
 
                 if (driveInfo.AvailableFreeSpace < SizeThreshold)
                 {
-                    
+
                     throw new Exception($"Not Enough Disk Space Exception {Environment.NewLine}" +
                         $"Your {driveInfo.Name} drive free space is {driveInfo.AvailableFreeSpace}");
                 }

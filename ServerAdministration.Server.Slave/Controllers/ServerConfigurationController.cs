@@ -10,22 +10,8 @@ namespace ServerAdministration.Server.Slave.Controllers
     [ApiController]
     public class ServerConfigurationController : ControllerBase
     {
-        private readonly IWritableOptions<ServerConfiguration> serverConfiguratinOption;
-        //IWritableOptions<ServerConfiguration> serverConfiguratinOption
         public ServerConfigurationController()
         {
-            //this.serverConfiguratinOption = serverConfiguratinOption;
-        }
-
-        [HttpPost("[Action]")]
-        public void InitializeJson([FromBody]ServerConfiguration serverConfiguration)
-        {
-            serverConfiguratinOption.Update(
-                opt =>
-                {
-                    opt.ServerId = serverConfiguration.ServerId;
-                    opt.ServerName = serverConfiguration.ServerName;
-                });
         }
 
         [HttpPost("[Action]")]
