@@ -1,8 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using ServerAdministration.IISServer;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.ServiceProcess;
-using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ServerAdministration.WindowsOs.FolderWatcherService
 {
@@ -11,8 +16,9 @@ namespace ServerAdministration.WindowsOs.FolderWatcherService
         private FileSystemWatcher myWatcher;
         private long SizeThreshold = 470000000;
 
-        public FolderWathcerService(List<string> paths)
+        public FolderWathcerService()
         {
+            var paths = GetListOfSites();
             foreach (var path in paths)
             {
                 var fileSystemWatcher = new FileSystemWatcher
@@ -28,6 +34,27 @@ namespace ServerAdministration.WindowsOs.FolderWatcherService
             InitializeComponent();
         }
 
+        public List<SiteInfo> GetListOfSites()
+        {
+            var apiUrl = $"127.0.0.1/api/SiteInfo/GetSitesInfo";
+
+            using (var client = new HttpClient())
+            using (var request = new HttpRequestMessage(HttpMethod.Get, apiUrl))
+            {
+                using (var response = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None).Result)
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseContent = response.Content.ReadAsStringAsync();
+
+                         return JsonConvert.DeserializeObject<List<SiteInfo>>(responseContent.Result);
+                    }
+
+                    throw new Exception("Response is not Successfull");
+                }
+
+            }
+        }
         private void MyWatcher_Created(object sender, FileSystemEventArgs e)
         {
             var wathcer = sender as FileSystemWatcher;
