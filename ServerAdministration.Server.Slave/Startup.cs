@@ -71,6 +71,10 @@ namespace ServerAdministration.Server.Slave
             //services.ConfigureWritable<ServerConfiguration>(Configuration.GetSection("ServerConfiguration"), "appsettings.json");
 
         }
+        public void ConfigureDevelopment()
+        {
+
+        }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

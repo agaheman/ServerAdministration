@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net.Http;
 using System.ServiceProcess;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ServerAdministration.WindowsOs.FolderWatcherService
 {
@@ -15,11 +14,16 @@ namespace ServerAdministration.WindowsOs.FolderWatcherService
     {
         private FileSystemWatcher myWatcher;
         private long SizeThreshold = 470000000;
+        private List<SiteInfo> sitesInfo;
 
         public FolderWathcerService()
         {
-            var paths = GetListOfSites();
-            foreach (var path in paths)
+            sitesInfo = GetListOfSites();
+
+
+
+
+            foreach (var path in sitesInfo.Select(x=>x.LogFile.Directory))
             {
                 var fileSystemWatcher = new FileSystemWatcher
                 {
@@ -36,7 +40,7 @@ namespace ServerAdministration.WindowsOs.FolderWatcherService
 
         public List<SiteInfo> GetListOfSites()
         {
-            var apiUrl = $"127.0.0.1/api/SiteInfo/GetSitesInfo";
+            var apiUrl = $"https://localhost:5005/api/SiteInfo/GetSitesInfo";
 
             using (var client = new HttpClient())
             using (var request = new HttpRequestMessage(HttpMethod.Get, apiUrl))

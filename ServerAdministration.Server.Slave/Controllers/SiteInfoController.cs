@@ -7,7 +7,6 @@ using ServerAdministration.Server.Slave.Services;
 using ServerAdministration.WindowOs;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace ServerAdministration.Server.Slave.Controllers
 {
@@ -33,7 +32,7 @@ namespace ServerAdministration.Server.Slave.Controllers
             return result;
         }
 
-        
+
 
         [HttpGet("[Action]")]
         public List<SiteInfo> GetSitesInfo()

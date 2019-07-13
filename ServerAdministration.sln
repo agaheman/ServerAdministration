@@ -19,9 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerAdministration.Server
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerAdministration.Server.DataAccess", "ServerAdministration.Server.DataAccess\ServerAdministration.Server.DataAccess.csproj", "{BF62E461-9C9D-4B94-AF4C-45DC19E356C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerAdministration.Windows", "ServerAdministration.WindowOs\ServerAdministration.Windows.csproj", "{359BE9C6-C22A-44E7-A98A-ED97346DCDEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerAdministration.WindowsOs", "ServerAdministration.WindowOs\ServerAdministration.WindowsOs.csproj", "{359BE9C6-C22A-44E7-A98A-ED97346DCDEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerAdministration.Windows.FolderWatcherService", "ServerAdministration.WindowsOs.FolderWatcherService\ServerAdministration.Windows.FolderWatcherService.csproj", "{C00D38A4-C439-4A8E-A34E-EDA0EEBBD181}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerAdministration.WindowsOs.FolderWatcherService", "ServerAdministration.WindowsOs.FolderWatcherService\ServerAdministration.WindowsOs.FolderWatcherService.csproj", "{C00D38A4-C439-4A8E-A34E-EDA0EEBBD181}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
