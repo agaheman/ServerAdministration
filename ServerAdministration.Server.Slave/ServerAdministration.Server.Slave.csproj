@@ -24,4 +24,10 @@
     <ProjectReference Include="..\ServerAdministration.Server.DataAccess\ServerAdministration.Server.DataAccess.csproj" />
     <ProjectReference Include="..\ServerAdministration.WindowOs\ServerAdministration.WindowsOs.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Administration">
+      <HintPath>..\packages\Microsoft.Web.Administration.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

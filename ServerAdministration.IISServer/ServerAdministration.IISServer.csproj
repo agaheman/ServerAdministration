@@ -6,11 +6,16 @@
 
   <ItemGroup>
     <PackageReference Include="IISLogParser" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Web.Administration" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ServerAdministration.Server.DataAccess\ServerAdministration.Server.DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Administration">
+      <HintPath>..\packages\Microsoft.Web.Administration.dll</HintPath>
+    </Reference>
   </ItemGroup>
   
 </Project>

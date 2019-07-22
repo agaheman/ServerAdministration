@@ -10,7 +10,7 @@ namespace ServerAdministration.WindowsOs.FolderWatcherService
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new FolderWathcerService()//db address
+                new FolderWathcerService    ()//db address
             };
             ServiceBase.Run(ServicesToRun);
         }
